@@ -1,11 +1,12 @@
 package com.marcin.todo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.*;
+
 import java.time.LocalDate;
 
 @Builder

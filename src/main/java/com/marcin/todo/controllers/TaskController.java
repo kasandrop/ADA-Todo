@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RestController
 public class TaskController {
 
     private final TaskRepository taskRepository;
