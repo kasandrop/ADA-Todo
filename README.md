@@ -2,11 +2,14 @@
 ![](database.jpg) 
 ## Product Description.
 ### Brief overview
-We are going to create a to do application. It will help manage our daily tasks, which can be categorised into groups such as Personal, Work, or Household.
+We are going to create a to do application.
+It will help manage our daily tasks, which can be categorised into groups such as Personal, Work or Household.
 Therefore, our to do app will have the following components:
-Tasks: Each task has a name, description, due date, and a completion status (yes or no).
+Tasks: Each task has a name, description,  and a completion status (yes or no).
 Labels: There can be Personal, Work, Household label.
-Relationship: Each task can be associated with one or more labels, indicating the context or category of the task. This is a one-to-many relationship from tasks to labels.
+Relationship: Each task must be associated with one only  label, indicating the context or category of the task.
+This is a one-to-many relationship from tasks to labels.
+The same label can have zero or more tasks. 
 
 ### Functionality
 1. Task Management:Create, read, update, and delete (CRUD) tasks.
@@ -16,6 +19,26 @@ Relationship: Each task can be associated with one or more labels, indicating th
 5. List all labels.
 6. List all tasks.
 7. Maybe filtering tasks by their labels [ Depends on my mood]
+
+### Requirements
+1. Label names must be unique. If a user attempts to create a label with a name that already exists, the creation process will fail. The user will then receive an error message indicating that the chosen label name is already in use
+2. A label can be created independently and is not required to be associated with any task.
+3. However, each task must be associated with an existing label. A task cannot be created with a non-existent label.
+4. When creating a task, providing a description is optional. However, a name is mandatory. 
+   If a name is not provided, the task creation process will not proceed, and an error message will be displayed 
+   to inform the user about the necessity of providing a name.
+5. Upon creation, the ‘completion_status’ field of a task is always set to false, indicating that the task is not yet completed.
+   This ensures that every new task starts in an incomplete state.
+
+### Error Handling and Messages
+
+ 
+| Error                                   | When it occurs                                                                        | Message to display                                                                               | Implication                                                                                                                              |
+|-----------------------------------------|---------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| Task creation without a name            | When a user tries to create a task without providing a name.                          | "Task creation failed: A name is required for each task."                                        | The task will not be created until a name is provided. This ensures that all tasks can be properly identified.                           |
+| Label creation with a duplicate name    | When a user tries to create a label with a name that already exists.                  | "Label creation failed: The name you've chosen is already in use. Please choose a unique name."  | The label will not be created until a unique name is provided. This ensures that all labels can be uniquely identified.                  |
+| Task creation with a non-existent label | When a user tries to create a task with a label that doesn't exist.                   | "Task creation failed: The label you've chosen does not exist. Please choose an existing label." | The task will not be created until an existing label is chosen. This ensures that all tasks are associated with valid labels.            |
+| Unknown error                           | When an unexpected error occurs that doesn't match any of the known error conditions. | "An unknown error occurred. Please try again."                                                   | The operation failed due to an unexpected issue. The user is advised to try the operation again or contact support if the error persists |
 
 ### Api endpoints for tasks and labels:
 
