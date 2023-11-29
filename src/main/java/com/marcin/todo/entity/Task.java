@@ -21,14 +21,11 @@ public class Task {
     private int id;
     @NonNull
     private String name;
-    @NonNull
     private String description;
-    @NonNull
-    private LocalDate dueDate;
     private boolean completion;
     @ManyToOne
     @JsonBackReference
-    @Cascade(CascadeType.ALL)
+    @JoinColumn(name = "label_id", nullable = false)
     private Label label;
 
 }

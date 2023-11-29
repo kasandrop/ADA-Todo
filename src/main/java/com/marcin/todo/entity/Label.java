@@ -2,10 +2,7 @@ package com.marcin.todo.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import java.util.List;
@@ -20,8 +17,9 @@ public class Label {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @NonNull
     private String name;
-    @OneToMany(mappedBy = "label", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "label", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Task> tasks;
 
