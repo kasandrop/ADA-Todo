@@ -18,7 +18,8 @@ The same label can have zero or more tasks.
 4. Search task by a name
 5. List all labels.
 6. List all tasks.
-7. Maybe filtering tasks by their labels [ Depends on my mood]
+7. User will be able to mark a task as completed.
+7. Maybe filtering tasks by their labels [ Depends ]
 
 ### Requirements
 1. Label names must be unique. If a user attempts to create a label with a name that already exists, the creation process will fail. The user will then receive an error message indicating that the chosen label name is already in use
@@ -63,7 +64,7 @@ The choice of Java 19, Spring Boot, and Maven for my backend development is prim
 __Requirements to be able to run the app:__
 1. java version 17
 2. Apache Maven 3.3 or above
-3. h2 database:username:MARCIN pass:MARCIN1 [TO MANAGE DATABASE](http://localhost:8091/h2-console)
+3. h2 database ![TO MANAGE DATABASE](http://localhost:8091/h2-console)
 
 
 The Spring boot backend service can be run with the following command :
@@ -79,7 +80,7 @@ to stop the service : ctrl+C
 ## Coding Best Practices.
 Coding best practices are a set of guidelines designed to improve the quality of software development
 and make the code more maintainable, scalable, and readable.
-Therefore we use tool Checkstyle, which will help achieve the following:
+Therefore, we use tool Checkstyle, which will help achieve the following:
 
 ### Consistent Naming Conventions: 
 This makes the code easier to read and understand. 
