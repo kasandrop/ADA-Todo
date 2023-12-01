@@ -93,6 +93,10 @@
                     <mainClass>com.marcin.todo.TodoApplication</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
 
             <!--CHECKSTYLE
             <plugin>

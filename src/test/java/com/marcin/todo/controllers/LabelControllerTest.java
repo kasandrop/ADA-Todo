@@ -60,8 +60,6 @@ class LabelControllerTest {
                 .andExpect(content().json(jsonList));
     }
 
-// add test which returns tasks  as well  for certain label
-
     @Test
     public void getLabelById() throws Exception {
 
@@ -147,13 +145,4 @@ class LabelControllerTest {
                 .andExpect(content().string("Label deleted."));
     }
 
-//   @Test
-//  public void deleteLabelThrowsEmptyResultDataAccessException() throws Exception {
-//       int id = 1;
-//        doThrow(EmptyResultDataAccessException.class).when(labelRepository).deleteById(id);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.delete("/labels/{id}",id))
-//
-//               .andExpect(status().isNotFound());
-//   }
 }
