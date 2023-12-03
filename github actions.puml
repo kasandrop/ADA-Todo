@@ -1,0 +1,12 @@
+@startuml
+title GitHub Actions Workflow Steps
+start
+:Checkout repository;
+:Set up environment;
+:Install dependencies;
+:Build;
+:Test;
+:Deploy (optional);
+:Post actions (optional);
+stop
+@enduml
