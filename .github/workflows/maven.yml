@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: build-and-test
 
 on:
   push:
@@ -16,11 +16,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -28,16 +27,23 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn -B install --file pom.xml
 
-      - name: Test with coverage
-        run: mvn test jacoco:report
+  publish-snapshot:
+      needs: build
+      runs-on: ubuntu-latest
 
-      - name: Publish to GitHub Pages
-        uses: mikeal/publish-to-github-action@master
+      steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up settings.xml for GitHub Packages
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Publish SNAPSHOT version to GitHub Packages
+        run: mvn -B --no-transfer-progress deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: target/site/jacoco
-          CLEAN: true
 
