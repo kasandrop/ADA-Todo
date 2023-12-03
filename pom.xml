@@ -19,6 +19,14 @@
         <postgres.version>42.6.0</postgres.version>
         <swagger.version>2.1.0</swagger.version>
     </properties>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub kasandrop ADA-Todo Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/kasandrop/ADA-Todo</url>
+        </repository>
+    </distributionManagement>
+
 
     <dependencies>
 
