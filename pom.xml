@@ -5,7 +5,7 @@
 
     <groupId>com.marcin</groupId>
     <artifactId>todo</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.5-SNAPSHOT</version>
     <name>todo</name>
 
     <parent>
@@ -18,6 +18,7 @@
         <java.version>17</java.version>
         <postgres.version>42.7.0</postgres.version>
         <swagger.version>2.3.0</swagger.version>
+
     </properties>
     <distributionManagement>
         <repository>
@@ -26,7 +27,16 @@
             <url>https://maven.pkg.github.com/kasandrop/ADA-Todo</url>
         </repository>
     </distributionManagement>
+    <profiles>
+        <profile>
+            <id>test</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
 
+
+        </profile>
+    </profiles>
 
     <dependencies>
 
