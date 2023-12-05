@@ -44,19 +44,17 @@ class TaskControllerTest {
             "id":1,
             "name":"Clean Car",
             "description":"Clean car in garage",
-            "dueDate":"2024-01-01",
             "completion":false
           },
           {
             "id":2,
             "name":"Wash Dishes",
             "description":"Clean all dishes in kitchen",
-            "dueDate":"2024-02-02",
             "completion":true
         }]""";
 
-        Task cleanCar = Task.builder().id(1).name("Clean Car").description("Clean car in garage").dueDate(LocalDate.parse("2024-01-01")).completion(false).build();
-        Task washDishes = Task.builder().id(2).name("Wash Dishes").description("Clean all dishes in kitchen").dueDate(LocalDate.parse("2024-02-02")).completion(true).build();
+        Task cleanCar = Task.builder().id(1).name("Clean Car").description("Clean car in garage").completion(false).build();
+        Task washDishes = Task.builder().id(2).name("Wash Dishes").description("Clean all dishes in kitchen").completion(true).build();
         List<Task> tasks = Arrays.asList(cleanCar, washDishes);
 
         when(taskRepository.findAll()).thenReturn(tasks);
@@ -77,12 +75,11 @@ class TaskControllerTest {
                     "id":1,
                     "name":"Clean Car",
                     "description":"Clean car in garage",
-                    "dueDate":"2024-01-01",
                     "completion":false
                   }""";
 
         int testID = 1;
-        Task task = Task.builder().id(testID).name("Clean Car").description("Clean car in garage").dueDate(LocalDate.parse("2024-01-01")).completion(false).build();
+        Task task = Task.builder().id(testID).name("Clean Car").description("Clean car in garage").completion(false).build();
 
         when(taskRepository.findById(testID)).thenReturn(Optional.of(task));
 
@@ -106,27 +103,26 @@ class TaskControllerTest {
     @Test
     void addTask() throws Exception {
 
-        String jsonCar ="""
+        String jsonCar = """
                 {
                     "id":1,
                     "name":"Clean Car",
                     "description":"Clean car in garage",
-                    "dueDate":"2024-01-01",
                     "completion":false
-                }""";
+                }
+                """;
 
         String jsonWash = """
                 {
                     "id":2,
                     "name":"Wash Dishes",
                     "description":"Clean all dishes in kitchen",
-                    "dueDate":"2024-02-02",
                     "completion":true
                 }
                 """;
 
-        Task cleanCar = Task.builder().id(1).name("Clean Car").description("Clean car in garage").dueDate(LocalDate.parse("2024-01-01")).completion(false).build();
-        Task washDishes = Task.builder().id(2).name("Wash Dishes").description("Clean all dishes in kitchen").dueDate(LocalDate.parse("2024-02-02")).completion(true).build();
+        Task cleanCar = Task.builder().id(1).name("Clean Car").description("Clean car in garage").completion(false).build();
+        Task washDishes = Task.builder().id(2).name("Wash Dishes").description("Clean all dishes in kitchen").completion(true).build();
 
         when(taskRepository.save(cleanCar)).thenReturn(cleanCar);
         when(taskRepository.save(washDishes)).thenReturn(washDishes);
