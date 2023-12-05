@@ -5,7 +5,7 @@
 
     <groupId>com.marcin</groupId>
     <artifactId>todo</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>todo</name>
 
     <parent>
@@ -16,9 +16,9 @@
 
     <properties>
         <java.version>17</java.version>
-        <postgres.version>42.7.0</postgres.version>
-        <swagger.version>2.3.0</swagger.version>
-
+        <postgres.version>42.6.0</postgres.version>
+        <swagger.version>2.1.0</swagger.version>
+        <build-plugin.jacoco.version>0.8.11</build-plugin.jacoco.version>
     </properties>
     <distributionManagement>
         <repository>
@@ -27,17 +27,39 @@
             <url>https://maven.pkg.github.com/kasandrop/ADA-Todo</url>
         </repository>
     </distributionManagement>
+
+
     <profiles>
-        <profile>
-            <id>test</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-
-
-        </profile>
+    <profile>
+        <id>coverage</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${build-plugin.jacoco.version}</version>
+                    <executions>
+                        <!-- Prepares the property pointing to the JaCoCo runtime agent
+                        which is passed as VM argument when Maven the Surefire plugin is executed. -->
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <!-- Ensures that the code coverage report is created after
+                        all tests have been run. -->
+                        <execution>
+                            <id>generate-report</id>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
     </profiles>
-
     <dependencies>
 
 
@@ -103,36 +125,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.11</version>
-                <configuration>
-                    <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
-                    <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
-                    <output>file</output>
-                    <append>true</append>
-                    <excludes>
-                        <exclude>*MethodAccess</exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>jacoco-initialize</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <phase>test-compile</phase>
-                    </execution>
-                    <execution>
-                        <id>jacoco-site</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>

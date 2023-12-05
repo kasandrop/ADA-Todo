@@ -2,6 +2,7 @@ package com.marcin.todo.controllers;
 
 import com.marcin.todo.data.LabelRepository;
 import com.marcin.todo.entity.Label;
+import com.marcin.todo.service.LabelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,38 +15,39 @@ import java.util.Optional;
 public class LabelController {
 
 
-    private final LabelRepository labelRepository;
+    private final LabelService labelService ;
 
-    public LabelController(LabelRepository labelRepository) {
-        this.labelRepository = labelRepository;
+    public LabelController(LabelService labelService) {
+        this.labelService = labelService;
     }
 
     @GetMapping("/labels")
     public ResponseEntity<List<Label>> getAllLabels() {
-        List<Label> labels = new ArrayList<>();
-        labelRepository.findAll().forEach(labels::add);
+        List<Label> labels = labelService.getAllLabels();
         return new ResponseEntity<>(labels, HttpStatus.OK);
     }
 
     @GetMapping("/labels/{id}")
     public ResponseEntity<Label> getLabelById(@PathVariable(value = "id") int id) {
-        Optional<Label> label = labelRepository.findById(id);
-        if (label.isEmpty()) {
+        try {
+            Label label = labelService.getLabel(id);
+            return new ResponseEntity<>(label, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(label.get(), HttpStatus.OK);
     }
 
 
     @PostMapping("/labels")
     public ResponseEntity<Label> addLabel(@RequestBody Label label) {
-        return new ResponseEntity<>(labelRepository.save(label), HttpStatus.CREATED);
+        Label savedLabel = labelService.createLabel(label);
+        return new ResponseEntity<>(savedLabel, HttpStatus.CREATED);
     }
 
 
     @DeleteMapping("/labels/{id}")
     public ResponseEntity<String> deleteLabel(@PathVariable(value = "id") int id) {
-        labelRepository.deleteById(id);
+        labelService.deleteLabel(id);
         return new ResponseEntity<>("Label deleted.", HttpStatus.OK);
     }
 }

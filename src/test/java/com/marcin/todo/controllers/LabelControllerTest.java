@@ -2,6 +2,7 @@ package com.marcin.todo.controllers;
 
 import com.marcin.todo.data.LabelRepository;
 import com.marcin.todo.entity.Label;
+import com.marcin.todo.service.LabelService;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ class LabelControllerTest {
 
 
     @MockBean
-    private LabelRepository labelRepository;
+    private LabelService labelService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -54,7 +55,7 @@ class LabelControllerTest {
         Label work = Label.builder().id(2).name("Work").build();
         List<Label> labels = Arrays.asList(home, work);
 
-        when(labelRepository.findAll()).thenReturn(labels);
+        when(labelService.getAllLabels()).thenReturn(labels);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/labels")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -74,7 +75,7 @@ class LabelControllerTest {
         int id = 1;
         Label label = Label.builder().id(id).name("Home").build();
 
-        when(labelRepository.findById(id)).thenReturn(Optional.of(label));
+        when(labelService.getLabel(id)).thenReturn(label);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/labels/" + id)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -86,7 +87,7 @@ class LabelControllerTest {
     public void getLabelByIdNotFound() throws Exception {
         int id = 1;
 
-        when(labelRepository.findById(id)).thenReturn(Optional.empty());
+        when(labelService.getLabel(id)).thenThrow(IllegalArgumentException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/labels/" + id)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -113,8 +114,8 @@ class LabelControllerTest {
         Label labelHome = Label.builder().id(1).name("Home").build();
         Label labelWork = Label.builder().id(2).name("Work").build();
 
-        when(labelRepository.save(labelHome)).thenReturn(labelHome);
-        when(labelRepository.save(labelWork)).thenReturn(labelWork);
+        when(labelService.createLabel(labelHome)).thenReturn(labelHome);
+        when(labelService.createLabel(labelWork)).thenReturn(labelWork);
 
         ResultActions responseHome = mockMvc.perform(MockMvcRequestBuilders.post("/labels")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -139,7 +140,7 @@ class LabelControllerTest {
     public void deleteLabel() throws Exception {
         int id = 1;
 
-        doNothing().when(labelRepository).deleteById(id);
+        doNothing().when(labelService).deleteLabel(id);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/labels/" + id)
                         .contentType(MediaType.APPLICATION_JSON))
