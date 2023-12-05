@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -108,5 +109,21 @@ class LabelRepositoryTest {
         var countAfterUpdate = labelRepository.count();
         assertThat(countBeforeUpdate).isEqualTo(countAfterUpdate);
     }
+
+    @Test
+    void findLabelByName() {
+        logger.info(" 2.6 Test Case: Verify that the repository correctly retrieves a label by its name.");
+
+
+        // When: Retrieve the label by its name
+        Label actual = labelRepository.findByName("HOUSEHOLD").orElseThrow(() -> new NoSuchElementException("Task not found"));
+
+        // Then: Verify that the label was retrieved correctly
+        assertThat(actual).isNotNull();
+        assertThat(actual.getName()).isEqualTo("HOUSEHOLD");
+        assertThat(actual.getId()).isEqualTo(3);
+        assertThat(actual.getTasks()).size().isEqualTo(5);
+    }
+
 
 }
