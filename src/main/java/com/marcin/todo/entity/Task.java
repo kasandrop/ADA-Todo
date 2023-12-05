@@ -23,7 +23,7 @@ public class Task {
     private boolean completion;
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "label_id", nullable = false)
+    @JoinColumn(name = "label_id")
     private Label label;
 
 }
