@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface TaskRepository extends CrudRepository<Task, Integer> {
     Optional<Task> findByName(String name);
+
 }

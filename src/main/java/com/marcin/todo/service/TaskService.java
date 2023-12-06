@@ -2,12 +2,14 @@ package com.marcin.todo.service;
 
 
 import com.marcin.todo.data.TaskRepository;
+import com.marcin.todo.entity.Label;
 import com.marcin.todo.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -38,6 +40,8 @@ public class TaskService {
     }
 
     public void deleteTask(int id) {
-        taskRepository.deleteById(id);
+       taskRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid task Id:" + id));
     }
+
+
 }

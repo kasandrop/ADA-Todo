@@ -38,7 +38,13 @@ public class LabelService {
     }
 
     public void deleteLabel(int id) {
-        labelRepository.deleteById(id);
+        Optional<Label> optionalLabel = labelRepository.findById(id);
+        if (optionalLabel.isPresent()) {
+            labelRepository.deleteById(id);
+        }else{
+            throw new IllegalArgumentException("Invalid label Id: Label for deletion not found");
+        }
+
     }
 
     private Label updateLabel(Label updatedLabel) {
