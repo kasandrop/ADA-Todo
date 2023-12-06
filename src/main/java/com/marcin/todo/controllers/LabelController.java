@@ -1,6 +1,6 @@
 package com.marcin.todo.controllers;
 
-import com.marcin.todo.data.LabelRepository;
+
 import com.marcin.todo.entity.Label;
 import com.marcin.todo.service.LabelService;
 import org.springframework.http.HttpStatus;
@@ -40,7 +40,7 @@ public class LabelController {
 
     @PostMapping("/labels")
     public ResponseEntity<Label> addLabel(@RequestBody Label label) {
-        Label savedLabel = labelService.createLabel(label);
+        Label savedLabel = labelService.saveLabel(label);
         return new ResponseEntity<>(savedLabel, HttpStatus.CREATED);
     }
 

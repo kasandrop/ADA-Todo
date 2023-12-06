@@ -114,8 +114,8 @@ class LabelControllerTest {
         Label labelHome = Label.builder().id(1).name("Home").build();
         Label labelWork = Label.builder().id(2).name("Work").build();
 
-        when(labelService.createLabel(labelHome)).thenReturn(labelHome);
-        when(labelService.createLabel(labelWork)).thenReturn(labelWork);
+        when(labelService.saveLabel(labelHome)).thenReturn(labelHome);
+        when(labelService.saveLabel(labelWork)).thenReturn(labelWork);
 
         ResultActions responseHome = mockMvc.perform(MockMvcRequestBuilders.post("/labels")
                         .contentType(MediaType.APPLICATION_JSON)

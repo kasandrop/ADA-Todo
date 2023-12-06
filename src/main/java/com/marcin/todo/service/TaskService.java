@@ -1,7 +1,9 @@
 package com.marcin.todo.service;
 
+
 import com.marcin.todo.data.TaskRepository;
 import com.marcin.todo.entity.Task;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,12 +11,11 @@ import java.util.List;
 
 @Service
 public class TaskService {
+    @Autowired
+    private TaskRepository taskRepository;
 
-    private final TaskRepository taskRepository;
-
-    public TaskService(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
+    @Autowired
+    private LabelService labelService;
 
     public List<Task> getAllTasks() {
         List<Task> tasks = new ArrayList<>();
@@ -27,23 +28,13 @@ public class TaskService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid task Id:" + id));
     }
 
-    public Task createTask(Task newTask) {
-        return taskRepository.save(newTask);
-    }
+    public Task saveTask(Task task) {
+        if (task.getName() == null || task.getName().isEmpty()) {
+            throw new IllegalArgumentException("Task creation failed: A name is required for each task.");
+        }
 
-    public Task updateTask(Task updatedTask, int id) {
-        return taskRepository.findById(id)
-                .map(task -> {
-                    task.setName(updatedTask.getName());
-                    task.setDescription(updatedTask.getDescription());
-                    task.setCompletion(updatedTask.isCompletion());
-                    task.setLabel(updatedTask.getLabel());
-                    return taskRepository.save(task);
-                })
-                .orElseGet(() -> {
-                    updatedTask.setId(id);
-                    return taskRepository.save(updatedTask);
-                });
+        labelService.getLabel(task.getLabel().getId());
+        return taskRepository.save(task);
     }
 
     public void deleteTask(int id) {
