@@ -17,13 +17,13 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NonNull
+    @Column(nullable = false)
     private String name;
     private String description;
     private boolean completion;
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "label_id", nullable = false)
+    @JoinColumn(name = "label_id")
     private Label label;
 
 }

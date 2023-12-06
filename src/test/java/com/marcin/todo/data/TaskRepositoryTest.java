@@ -3,6 +3,7 @@ package com.marcin.todo.data;
 
 import com.marcin.todo.entity.Label;
 import com.marcin.todo.entity.Task;
+import com.marcin.todo.factories.TaskFactory;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,6 +150,25 @@ public class TaskRepositoryTest {
         assertThat(taskOptional.get().getName()).isEqualTo(taskName);
     }
 
+    @Test
+    void saveTask() {
+
+        logger.info("3.8 Create Task when all mandatory data is provided (the associated Label and a name of a task). Verify that the repository saves a task");
+
+        // Get all tasks from the repository
+        int tasksNumber =( (List<Task>) taskRepository.findAll()).size();
+        // Define the existing Label
+        Label label= Label.builder().name("HOUSEHOLD").id(3).build();
+        List<Task> taskList= TaskFactory.createTasks(label,1);
+        Task taskToSave= taskList.get(0);
+
+        Task saved= taskRepository.save(taskToSave);
+
+        // Get all tasks from the repository
+        List<Task> tasksNewList = (List<Task>) taskRepository.findAll();
+        assertThat(tasksNewList.size()).isEqualTo(tasksNumber+1);
+
+    }
 
 
 

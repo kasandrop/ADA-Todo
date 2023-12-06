@@ -2,6 +2,8 @@ package com.marcin.todo.data;
 
 import com.marcin.todo.entity.Label;
 import com.marcin.todo.entity.Task;
+import com.marcin.todo.factories.TaskFactory;
+import com.marcin.todo.service.TaskService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class LabelRepositoryTest {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(LabelRepositoryTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(TaskService.class);
     @Autowired
     private LabelRepository labelRepository;
 
@@ -116,7 +118,7 @@ class LabelRepositoryTest {
 
 
         // When: Retrieve the label by its name
-        Label actual = labelRepository.findByName("HOUSEHOLD").orElseThrow(() -> new NoSuchElementException("Task not found"));
+        Label actual = labelRepository.findByName("HOUSEHOLD").orElseThrow(() -> new NoSuchElementException("Label not found"));
 
         // Then: Verify that the label was retrieved correctly
         assertThat(actual).isNotNull();

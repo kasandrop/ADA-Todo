@@ -5,7 +5,7 @@
 
     <groupId>com.marcin</groupId>
     <artifactId>todo</artifactId>
-    <version>0.0.9-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>todo</name>
 
     <parent>
@@ -16,9 +16,9 @@
 
     <properties>
         <java.version>17</java.version>
-        <postgres.version>42.7.0</postgres.version>
-        <swagger.version>2.3.0</swagger.version>
-
+        <postgres.version>42.6.0</postgres.version>
+        <swagger.version>2.1.0</swagger.version>
+        <build-plugin.jacoco.version>0.8.11</build-plugin.jacoco.version>
     </properties>
     <distributionManagement>
         <repository>
@@ -27,9 +27,41 @@
             <url>https://maven.pkg.github.com/kasandrop/ADA-Todo</url>
         </repository>
     </distributionManagement>
+
+
     <profiles>
+    <profile>
+        <id>coverage</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${build-plugin.jacoco.version}</version>
+                    <executions>
+                        <!-- Prepares the property pointing to the JaCoCo runtime agent
+                        which is passed as VM argument when Maven the Surefire plugin is executed. -->
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <!-- Ensures that the code coverage report is created after
+                        all tests have been run. -->
+                        <execution>
+                            <id>generate-report</id>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
     </profiles>
     <dependencies>
+
 
         <!-- Spring -->
         <dependency>
@@ -93,34 +125,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <!-- Maven Surefire Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
-            </plugin>
-            <!-- Jacoco Maven Plugin -->
-            <!-- JaCoCo plugin for generating code coverage reports -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version>
-                <executions>
-                    <execution>
-                        <id>default-prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -129,7 +134,11 @@
                     <mainClass>com.marcin.todo.TodoApplication</mainClass>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
 
 
         </plugins>

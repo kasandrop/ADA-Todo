@@ -74,7 +74,6 @@ to stop the service : ctrl+C
 
 
 
-
 ## Test Methodologies and Tools.
 
 ### Test  scenarios 
@@ -82,7 +81,7 @@ to stop the service : ctrl+C
 | Integration | Unit |     |                                                                                                                                                                                                                  |
 |-------------|------|-----|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |             |      | 1   | **Configuration tests**                                                                                                                                                                                          |
-| []          | [x]  | 1.1 | Test the Existence of the Database: Verify that the database is correctly set up and can be accessed.                                                                                                            |
+| []          | []   | 1.1 | Test the Existence of the Database: Verify that the database is correctly set up and can be accessed.                                                                                                            |
 |             |      |     |                                                                                                                                                                                                                  |
 | []          | [x]  | 2   | **CRUD Operations on Labels: Test scenarios related to creating, reading, updating, and deleting labels. It also includes tests for specific label-related behaviors.**                                          |
 | []          | [x]  | 2.1 | Find All Labels: Verify that the repository correctly retrieves all labels.                                                                                                                                      |
@@ -102,25 +101,21 @@ to stop the service : ctrl+C
 | []          | [x]  | 3.7 | Find Task by Name: Verify that the repository correctly retrieves a task by its name.                                                                                                                            |
 |             |      |     |                                                                                                                                                                                                                  |
 |             |      | 4   | **Relationship Between Labels and Tasks: This section includes test scenarios that verify the correct behavior of relationships between labels and tasks.**                                                      |         
-| []          | []   | 4.1 | Save a Task for an Existing Label: Verify that the repository correctly saves a new task for an existing label.                                                                                                  |
-| []          | []   | 4.2 |                                                                                                                                                                                                                  |
-| []          | []   | 4.3 | Delete Tasks When Label is Deleted: Verify that when a label is deleted, all its associated tasks are also deleted.                                                                                              |
-| []          | []   | 4.4 | Reject Task Creation for Non-Existing Label: Verify that the repository correctly rejects the creation of a task for a non-existing label.                                                                       |
-| []          | []   | 4.5 | Task References Its Label: Verify that when a task is retrieved by its ID, it correctly references its associated label.                                                                                         |
-| []          | []   | 4.6 | Label Not Deleted When All Tasks Are Deleted: Verify that when all tasks of a label are deleted, the label itself is not deleted.                                                                                |
-| []          | []   | 4.7 | Find Tasks by Label: Verify that the repository correctly retrieves all tasks associated with a specific label.                                                                                                  |
+| []          | [x]  | 4.1 | Verify that a new task can be created  and saved.                                                                                                                                                                |
+| []          | [x]  | 4.2 | Delete Tasks When Label is Deleted: Verify that when a label is deleted, all its associated tasks are also deleted.                                                                                              |
+| []          | [x]  | 4.3 | Task References Its Label: Verify that when a task is retrieved by its ID, it correctly references its associated label.                                                                                         |
+| []          | [x]  | 4.4 | Label Not Deleted When All Tasks Are Deleted: Verify that when all tasks of a label are deleted, the label itself is not deleted.                                                                                |
+| []          | [x]  | 4.5 | Find Tasks by Label: Verify that the repository correctly retrieves all tasks associated with a specific label.                                                                                                  |
 |             |      |     |                                                                                                                                                                                                                  |
 |             |      | 5   | **Exception Handling: This section includes test scenarios that verify the application correctly handles exceptions.**                                                                                           |                                                                                               |             
-| []          | []   | 5.1 | Raise Exception When Deleting Non-Existing Label: Verify that the repository correctly raises an exception when trying to delete a non-existing label.                                                           |                                                       
-| []          | []   | 5.2 | Raise Exception When Deleting Non-Existing Task: Verify that the repository correctly raises an exception when trying to delete a non-existing task.                                                             |                                                         
+| []          | --   | 5.1 | Raise Exception When Deleting Non-Existing Label: Verify that the repository correctly raises an exception when trying to delete a non-existing label.                                                           |                                                       
+| []          | --   | 5.2 | Raise Exception When Deleting Non-Existing Task: Verify that the repository correctly raises an exception when trying to delete a non-existing task.                                                             |                                                         
 | []          | []   | 5.3 | Raise Exception When Creating Label Without Name: Verify that the repository correctly raises an exception when trying to create a label without providing a name  or empty name field.                          |                                         
-| []          | []   | 5.4 | Raise Exception When Creating Task Without Name: Verify that the repository correctly raises an exception when trying to create a task without providing a name or empty name field.                             |                                          
-| []          | []   | 5.5 | Raise Exception When Creating Label With Non-Existing ID: Verify that the repository correctly raises an exception when trying to create a label with an ID that doesn't exist (since the ID is auto-generated). |
-| []          | []   | 5.6 | Raise Exception When Creating Task With Non-Existing ID: Verify that the repository correctly raises an exception when trying to create a task with an ID that doesn't exist (since the ID is auto-generated).   |
-| []          | []   | 5.7 | Raise Exception When Creating Label With Non-Unique Name: Verify that the repository correctly raises an exception when trying to create a label with a name that is not unique.                                 |
-| []          | []   | 5.8 | Raise Exception When Updating Non-Existing Label: Verify that the repository correctly raises an exception when trying to update a non-existing label.                                                           |
-| []          | []   | 5.9 | Raise Exception When Updating Non-Existing Task: Verify that the repository correctly raises an exception when trying to update a non-existing task.                                                             |
-            
+| []          | []   | 5.4 | Raise Exception When Creating Label With Non-Existing ID: Verify that the repository correctly raises an exception when trying to create a label with an ID that doesn't exist (since the ID is auto-generated). || []          | []   | 5.6  | Raise Exception When Creating Task With Non-Existing ID: Verify that the repository correctly raises an exception when trying to create a task with an ID that doesn't exist (since the ID is auto-generated).   || []          | []   | 5.7  | Raise Exception When Creating Label With Non-Unique Name: Verify that the repository correctly raises an exception when trying to create a label with a name that is not unique.                                 |
+| []          | []   | 5.5 | Raise Exception When Updating Non-Existing Label: Verify that the repository correctly raises an exception when trying to update a non-existing label.                                                           |
+| []          | []   | 5.6 | Raise Exception When Updating Non-Existing Task: Verify that the repository correctly raises an exception when trying to update a non-existing task.                                                             |
+| []          | []   | 5.7 | Reject Task Creation for Non-Existing Label: Verify that the repository correctly rejects the creation of a task for a non-existing label.                                                                       |
+               
 
 ## Coding Best Practices.
 Coding best practices are a set of guidelines designed to improve the quality of software development
@@ -155,9 +150,8 @@ it is deployed, making Checkstyle a valuable tool for maintaining code quality i
 
 ## CI Pipeline
 
-## Standards
 
-## Performance and Accessibility audit.
+
 
 ## Critically analyse the results.
 
