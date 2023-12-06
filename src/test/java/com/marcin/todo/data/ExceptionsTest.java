@@ -19,29 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ExceptionsTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ExceptionsTest.class);
-    @Autowired
-    private TaskRepository taskRepository;
+
     @Autowired
     private LabelRepository labelRepository;
-    @Disabled("This is framework functionality")
-    @Test
-    void raiseExceptionWhenDeletingNonExistingLabel() {
 
-        logger.info(" 5.1 Verify that the repository correctly raises an exception when trying to delete a non-existing label.");
 
-        // the ID of a non-existing label
-        int nonExistingLabelId = 999;
-
-        Optional<Label> labelOptional = labelRepository.findById(nonExistingLabelId);
-
-        // Verify that the label does not exist
-        assertThat(labelOptional).isNotPresent();
-
-        // Try to delete the non-existing label and expect an exception
-        assertThrows(IllegalArgumentException.class, () -> {
-            labelRepository.deleteById(nonExistingLabelId);
-        });
-    }
 
 
     @Test
