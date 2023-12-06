@@ -36,23 +36,24 @@ jobs:
             permissions:
               pull-requests: write
             steps:
-              - uses: actions/checkout@v3
+              - uses: actions/checkout@v4
 
               - name: Set up JDK 17
-                uses: actions/setup-java@v2
+                uses: actions/setup-java@v3
                 with:
                   java-version: '17'
                   distribution: 'temurin'
 
               - name: Run Coverage
-                run: mvn clean test
+                run: mvn clean verify
 
               - name: Add coverage to PR
                 id: jacoco
                 uses: madrapps/jacoco-report@v1.6.1
                 with:
                   paths: |
-                    ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+                    ${{ github.workspace }}/**/build/reports/jacoco/prodNormalDebugCoverage/prodNormalDebugCoverage.xml,
+                    ${{ github.workspace }}/**/build/reports/jacoco/**/debugCoverage.xml
                   token: ${{ secrets.GITHUB_TOKEN }}
                   min-coverage-overall: 40
                   min-coverage-changed-files: 60
