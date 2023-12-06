@@ -56,6 +56,8 @@ jobs:
                   token: ${{ secrets.GITHUB_TOKEN }}
                   min-coverage-overall: 40
                   min-coverage-changed-files: 60
+              - name: Display coverage overall
+                run: echo "Coverage Overall - ${{ steps.jacoco.outputs.coverage-overall }}"
               - name: List files in target/site/jacoco
                 run: ls -l target/site/jacoco
 
