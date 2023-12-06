@@ -57,7 +57,9 @@ jobs:
                   min-coverage-overall: 40
                   min-coverage-changed-files: 60
               - name: Display coverage overall
-                run: echo "Coverage Overall - ${{ steps.jacoco.outputs.coverage-overall }}"
+                run: |
+                      echo "Coverage Overall - ${{ steps.jacoco.outputs.coverage-overall }}"
+                      echo "The total coverage of all changed files - ${{ steps.jacoco.outputs.coverage-changed-files }}"
               - name: List files in target/site/jacoco
                 run: ls -l target/site/jacoco
 
