@@ -1,4 +1,4 @@
-package com.marcin.todo.data;
+package com.marcin.todo.factories;
 
 import com.marcin.todo.entity.Label;
 import com.marcin.todo.entity.Task;
