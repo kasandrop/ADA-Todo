@@ -1,5 +1,5 @@
 # Project summary
-![](database.jpg) 
+![](pic/database.jpg) 
 ## Product Description.
 ### Brief overview
 We are going to create a to-do application.
@@ -19,7 +19,7 @@ The same label can have zero or more tasks.
 5. List all labels.
 6. List all tasks.
 7. User will be able to mark a task as completed.
-7. Maybe filtering tasks by their labels [ Depends ]
+
 
 ### Requirements
 1. Label names must be unique. If a user attempts to create a label with a name that already exists, the creation process will fail. The user will then receive an error message indicating that the chosen label name is already in use
@@ -56,10 +56,12 @@ These  can be access by accessing [OpenAPI definition](http://localhost:8091/swa
 - Build Tool: Maven
 - Database: H2 (file based)
 
-The choice of Java 19, Spring Boot, and Maven for my backend development is primarily driven by my familiarity with these tools. These technologies are well-established in the industry, offering robust features and extensive community support, making them a reliable choice for building efficient and scalable applications.  Spring Boot provides a simplified approach to developing, allowing for rapid prototyping and development. Maven, a powerful project management tool, helps build and manage any Java-based project, ensuring consistency in project builds.
+The choice of Java 19, Spring Boot, and Maven for my backend development is primarily driven by my familiarity with these tools.
+These technologies are well-established in the industry, offering robust features and extensive community support, 
+making them a reliable choice for building efficient and scalable applications. Spring Boot provides a simplified approach to developing,
+allowing for rapid prototyping and development. Maven, a powerful project management tool, helps build and manage any Java-based project, ensuring consistency in project builds.
 
-### For the frontend
-[tbw]
+
 ## Instructions on how to run your application.
 __Requirements to be able to run the app:__
 1. java version 17
@@ -75,6 +77,119 @@ to stop the service : ctrl+C
 
 
 ## Test Methodologies and Tools.
+
+During the construction of my Spring Boot application, a diverse range of testing methodologies and instruments were implemented 
+to ensure compliance to the specifications. Below is a detailed explanation:
+
+### Unit Testing
+For unit tests, **Mockito** was employed, enabling the mocking of dependencies of the classes under test. 
+This allowed for the individual testing of each aspect of the application, affirming that they functioned as anticipated independently.
+
+### Slice Testing
+**DataJpa tests** were employed, a form of slice testing, allowing for the fast and efficient examination
+of the logic behind my entities and database schemas. This offered validation of my data access layer's accuracy without 
+the necessity to load the complete Spring context.
+
+### Integration Testing
+Integration tests were carried out to affirm the  interaction among different components of the application. 
+
+
+### Testing Different Components
+- **Controllers:** Both `LabelController` and `TaskController` were subject to unit testing using **mockMvc**. This confirmed the operational correctness of the web layer in the application.
+- **Service Classes:** The service classes logic was tested exhaustively to ensure the business operations were implemented correctly.
+- **Repository and Entities:** The logic of the created entities and database schemas were quickly tested using **DataJpa tests**.
+
+
+An unconventional approach to testing was applied in this project.
+Initially, a Minimum Viable Product (MVP) was quickly developed without unit tests to assess 
+the appropriateness of Spring Boot for this project.
+Post MVP establishment, the more specific  requirements  and test scenarios were defined, 
+commencing unit testing from the repository layer. 
+This allowed for quick validation of the technology stack and then the construction of a solid base
+accompanied by comprehensive tests.
+
+### Issues Encountered
+During the testing process, I encountered several issues that required modifications to the database schema, 
+entities, service layer, and controllers. Here are some examples:
+
+**Deleting Non-Existent Labels:** The system was initially configured to quietly ignore attempts to delete
+non-existent labels.
+To address this, I introduced logic in the controller to check if a label exists before deletion. 
+If the label doesn’t exist, the system sends a JSON message to the client informing them of the issue.
+
+**Handling Entity IDs:** The system was initially encountering an exception when attempting 
+to save an entity with a pre-existing ID. As per your requirements, 
+the system should update the entity if the ID is already present,
+and create a new one if it isn't.
+
+To facilitate this, I modified the ID generation strategy from automatic to 
+`GenerationType.IDENTITY`. However, the system continues to throw an exception and 
+sends an appropriate message when a non-existent entity ID is provided.
+
+In such a scenario, the system is unable to update the entity as the ID provided 
+does not exist. Additionally, the system will not create a new entity because an ID was
+provided. Consequently, an exception is thrown.
+
+**Bidirectional References:** I  wanted to enable bidirectional references,
+allowing  to access a label from a task and vice versa. 
+However, this led to circular dependencies, which I resolved by introducing the 
+EqualsAndHashCode(name) annotation. 
+This forces Spring Boot to use the hashcode of the entity name when comparing entities 
+of the same type..
+All these issues surfaced during the unit testing of the components, emphasizing 
+the importance of thorough testing in software development.
+
+### Automation
+
+GitHub Actions is a feature of GitHub that allows  to automate workflows for  projects.
+GitHub Actions  performs tasks such as building, testing, deploying, and releasing the code.
+In my example, I have a YAML file ( maven.yml in the .github folder ) that defines a workflow for a Maven project. 
+The workflow consists of three jobs that run on every push and pull request to the main branch.
+work flow.png
+![visualizing of workflow ](pic/work flow.png)
+The first job is called build, and it uses the Maven wrapper to compile the java code, 
+download all dependencies and run the tests.
+The second job is called build2, and it uses the Jacoco GitHub Action
+to generate a JaCoCo coverage report for the project. It prints the overall coverage and the coverage of all changed files
+to the github pull request page.
+![visualizing of workflow ](pic/test_report.png)
+The third job is called package, and it creates a Maven package of the todo spring boot 
+application. This package is then uploaded to GitHub Packages, which is a repository
+service that allows to host and share packages with other users.
+![visualizing of workflow ](pic/githubp.png)
+
+One of the advantages of using GitHub Actions is that it can integrate  workflows 
+with other GitHub features, such as issues, pull requests, and code reviews.
+
+
+Github action  is a continuous integration (CI) process,  my example  helps ensure that code changes do not significantly decrease test coverage. 
+
+If the coverage falls below the specified thresholds, the workflow will fail, alerting  to potential issues with the changes.
+
+At first, I  wondered why I needed GitHub Actions if I already use Maven, which is a tool that automates the build process for Java projects. 
+I noticed that   GitHub Actions and Maven complement each other, rather than replace each other. Maven handles the details of building, testing, and packaging my code,
+while GitHub Actions handles the details of running, managing, and integrating my workflows with GitHub.
+Together, they provide a powerful and flexible solution for automating the software development lifecycle.
+
+In addition to the three jobs that I have defined in my YAML file, I   also created another job that generates a test coverage report for my  project.
+Test coverage is a measure of how well my tests cover my  code. A high test coverage indicates that my code is well-tested and less likely to contain bugs or errors. 
+A low test coverage indicates that your code is poorly-tested and more likely to contain bugs or errors.
+
+I use the JaCoCo Maven plugin, which is a tool that measures and reports the code coverage of Java projects. I configured the JaCoCo plugin in my pom.xml file,
+and then I  run the `mvn verify` command to generate the report. The report will be saved in the target/site/jacoco directory.
+
+The  test coverage report  identifies gaps which still exist and need some work.
+![detail report available from todo/target/site/jacoco/com/marcin/todo](pic/report.png)*detail report available from todo/target/site/jacoco/com/marcin/todo*
+Total: The total coverage for the project is 75% with 154 missed instructions out of 617. 
+The branch coverage is 53% with 14 missed branches out of 30.
+There are 22 missed complexities, 18 missed lines, 12 missed methods, and no missed classes.
+
+![detail report available from todo/target/site/jacoco/com/marcin/todo](pic/controllers.png)*detail report available from todo/target/site/jacoco/com/marcin/todo*
+![detail report available from todo/target/site/jacoco/com/marcin/todo](pic/entities.png)*detail report available from todo/target/site/jacoco/com/marcin/todo*
+![detail report available from todo/target/site/jacoco/com/marcin/todo](pic/onfih.png)*detail report available from todo/target/site/jacoco/com/marcin/todo*
+![detail report available from todo/target/site/jacoco/com/marcin/todo](pic/c.png)*detail report available from todo/target/site/jacoco/com/marcin/todo*
+
+![aggregate report available from todo/target/surefire-reports](pic/surefirereport.png)*aggregate report available from todo/target/surefire-reports*
 
 ### Test  scenarios 
 
