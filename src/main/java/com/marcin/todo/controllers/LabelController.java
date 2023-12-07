@@ -13,7 +13,7 @@ import java.util.List;
 public class LabelController {
 
 
-    private final LabelService labelService ;
+    private final LabelService labelService;
 
     public LabelController(LabelService labelService) {
         this.labelService = labelService;
@@ -25,7 +25,7 @@ public class LabelController {
         return new ResponseEntity<>(labels, HttpStatus.OK);
     }
 
-    @GetMapping("/labels/{id}")
+     @GetMapping("/labels/{id}")
     public ResponseEntity<Label> getLabelById(@PathVariable(value = "id") int id) {
         try {
             Label label = labelService.getLabel(id);

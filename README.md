@@ -146,7 +146,7 @@ GitHub Actions  performs tasks such as building, testing, deploying, and releasi
 In my example, I have a YAML file ( maven.yml in the .github folder ) that defines a workflow for a Maven project. 
 The workflow consists of three jobs that run on every push and pull request to the main branch.
 work flow.png
-![visualizing of workflow ](pic/work flow.png)
+![visualizing of workflow ](pic/workflow.png)
 The first job is called build, and it uses the Maven wrapper to compile the java code, 
 download all dependencies and run the tests.
 The second job is called build2, and it uses the Jacoco GitHub Action
@@ -237,23 +237,9 @@ Coding best practices are a set of guidelines designed to improve the quality of
 and make the code more maintainable, scalable, and readable.
 Therefore, we use tool Checkstyle, which will help achieve the following:
 
-### Consistent Naming Conventions: 
-This makes the code easier to read and understand. 
-It includes using clear descriptive names for variable, functions, and classes, etc.
 
-### Code Formatting and Organization:
-This includes proper indentation, spacing and grouping of code. 
-Tools like linters and formatters can help enforce these rules.
 
-### Commenting and Documentation: 
-Comments should explain why certain decisions were made in the code. 
-Documentation should explain what the code does, how to use it, and any dependencies it has.
-
-### Error Handling: 
-This involves anticipating potential problems and handling them gracefully, 
-often through the use of try/catch blocks or returning meaningful error messages.
-
-Checkstyle is a development tool that helps code adhere to the above  standards. 
+Checkstyle is a development tool that helps code adhere to the common coding standards. 
 It has been included and configured in the Maven dependencies to automatically check
 for style issues during the build process. If the code does not adhere to the specified rules, 
 the build will fail.
@@ -262,16 +248,27 @@ This ensures that all code meets the team’s agreed-upon standards before
 it is deployed, making Checkstyle a valuable tool for maintaining code quality in a project.
 
 
+Here are some of the best coding practices that I can achieve with Checkstyle:
 
-## CI Pipeline
+- **Consistent Formatting**: Checkstyle ensures that my code has consistent formatting, including indentation, line lengths,
+and whitespace usage. This makes my code easier to read and understand.
+
+- **Naming Conventions**: Checkstyle checks that my classes, methods, and variables are named according to the conventions
+I have defined. This helps me and others understand what each class, method, or variable is for.
 
 
 
+- **Code Complexity**: Checkstyle can calculate and report on various complexity metrics of my code,
+such as cyclomatic complexity. This helps me identify complex code that may be hard to understand or maintain.
 
-## Critically analyse the results.
+How Checkstyle works:
 
-
-Sure, here are your test scenarios written in a more descriptive way:
+Checkstyle works by analysing Java source code files and applying a set of coding rules (checks) to each file.
+These checks can be configured according to my preferences or preferences of the team because the common rules can be shared with 
+the xlm file. When Checkstyle finds a line of code that violates
+one of these rules, it reports the violation. In IntelliJ IDEA, these violations are highlighted in the editor, 
+and a list of violations is also provided. I can then go through these violations and fix them to ensure my code adheres to 
+the best coding practices.
 
 
 
