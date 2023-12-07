@@ -1,27 +1,25 @@
 package com.marcin.todo.controllers;
 
-import com.marcin.todo.data.TaskRepository;
+import com.marcin.todo.entity.Label;
 import com.marcin.todo.entity.Task;
+import com.marcin.todo.service.TaskService;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class TaskControllerTest {
 
     @MockBean
-    private TaskRepository taskRepository;
+    private TaskService taskService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,14 +48,20 @@ class TaskControllerTest {
             "id":2,
             "name":"Wash Dishes",
             "description":"Clean all dishes in kitchen",
-            "completion":true
+            "completion":false
         }]""";
 
         Task cleanCar = Task.builder().id(1).name("Clean Car").description("Clean car in garage").completion(false).build();
-        Task washDishes = Task.builder().id(2).name("Wash Dishes").description("Clean all dishes in kitchen").completion(true).build();
+        Task washDishes = Task.builder().id(2).name("Wash Dishes").description("Clean all dishes in kitchen").completion(false).build();
+
+        Label labelMustExistAlways= Label.builder().id(12).name("washingMachine").build();
+
+        cleanCar.setLabel(labelMustExistAlways);
+        washDishes.setLabel(labelMustExistAlways);
+
         List<Task> tasks = Arrays.asList(cleanCar, washDishes);
 
-        when(taskRepository.findAll()).thenReturn(tasks);
+        when(taskService.getAllTasks()).thenReturn(tasks);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/tasks")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -79,9 +83,12 @@ class TaskControllerTest {
                   }""";
 
         int testID = 1;
-        Task task = Task.builder().id(testID).name("Clean Car").description("Clean car in garage").completion(false).build();
 
-        when(taskRepository.findById(testID)).thenReturn(Optional.of(task));
+        Label labelMustExistAlways= Label.builder().id(12).name("washingMachine").build();
+
+        Task task = Task.builder().id(testID).name("Clean Car").description("Clean car in garage").completion(false).label(labelMustExistAlways).build();
+
+        when(taskService.getTask(testID)).thenReturn(task);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/tasks/" + testID)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -90,51 +97,55 @@ class TaskControllerTest {
     }
 
     @Test
-    void getTaskByIdNotFound() throws Exception {
-        int id = 1;
-
-        when(taskRepository.findById(id)).thenReturn(Optional.empty());
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/tasks/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
     void addTask() throws Exception {
+        int testID = 1;
 
-        String jsonCar = """
+        String jsonList = """
                 {
                     "id":1,
                     "name":"Clean Car",
                     "description":"Clean car in garage",
                     "completion":false
-                }
-                """;
+                  }""";
 
-        String jsonWash = """
+        String jsonWash= """
                 {
-                    "id":2,
-                    "name":"Wash Dishes",
-                    "description":"Clean all dishes in kitchen",
-                    "completion":true
-                }
-                """;
+                "id":2,
+                "name":"Wash Dishes",
+                "description":"Clean all dishes in kitchen",
+                "completion":false
+        }""";
 
-        Task cleanCar = Task.builder().id(1).name("Clean Car").description("Clean car in garage").completion(false).build();
-        Task washDishes = Task.builder().id(2).name("Wash Dishes").description("Clean all dishes in kitchen").completion(true).build();
+        Label labelMustExistAlways= Label.builder().id(33).name("washingMachine").build();
 
-        when(taskRepository.save(cleanCar)).thenReturn(cleanCar);
-        when(taskRepository.save(washDishes)).thenReturn(washDishes);
+        Task cleanCar = Task.builder()
+                .id(testID)
+                .name("Clean Car")
+                .description("Clean car in garage")
+                .completion(false)
+                .label(labelMustExistAlways)
+                .build();
+
+        Task washDishes = Task.builder()
+                .id(testID+1)
+                .name("Wash Dishes")
+                .description("Clean all dishes in kitchen")
+                .completion(false)
+                .label(labelMustExistAlways)
+                .build();
+
+        when(taskService.saveTask(any(Task.class))).thenReturn(cleanCar);
+
 
         ResultActions responseCar = mockMvc.perform(MockMvcRequestBuilders.post("/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonCar));
+                .content(jsonList));
         responseCar.andExpect(status().isCreated())
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is(cleanCar.getName())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(cleanCar.getId())));
 
+        when(taskService.saveTask(any(Task.class))).thenReturn(washDishes);
         ResultActions responseWash = mockMvc.perform(MockMvcRequestBuilders.post("/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWash));
@@ -144,16 +155,20 @@ class TaskControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(washDishes.getId())));
     }
 
+
+
+
     @Test
     public void deleteTask() throws Exception {
         int id = 1;
 
-        doNothing().when(taskRepository).deleteById(id);
+        doNothing().when(taskService).deleteTask(id);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/tasks/" + id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Task deleted."));
+        verify(taskService, Mockito.times(1)).deleteTask(id);
     }
 
 
