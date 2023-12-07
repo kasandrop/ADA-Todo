@@ -19,7 +19,7 @@ public class Label {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(nullable = false )
+    @Column(nullable = false)
     private String name;
     @OneToMany(mappedBy = "label", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
