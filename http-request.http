@@ -1,0 +1,61 @@
+### List Tasks
+GET http://localhost:8091/tasks
+Content-Type: application/json
+
+> {%
+    client.test("Response status is OK", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response has 15 elements", function() {
+        client.assert(response.body.length === 15, `Expected 15 elements, but got ${response.body.length}`);
+    });
+%}
+
+### List Labels
+GET http://localhost:8091/labels
+Content-Type: application/json
+
+> {%
+    client.test("Response status is OK", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+    client.test("Response has 3 elements", function() {
+        client.assert(response.body.length=== 3, `Expected 3 elements, but got ${response.body.length}`);
+    });
+%}
+
+### Add Labels
+POST http://localhost:8091/labels
+Content-Type: application/json
+
+{
+  "id": 16,
+  "name": "Task: 16",
+  "description": "Description for Task 16",
+  "completion": false
+}
+
+> {%
+    client.test("Response status is OK", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+
+    });
+
+    client.test("Label is saved", function() {
+        const jsonResponse = response.body;
+        client.assert(jsonResponse.label.name === "Task: 16", "New label name hasn't been saved correctly");
+        client.assert(jsonResponse.label.tasks.length === 16, "Tasks haven't been saved correctly");
+    });
+
+%}
+
+###  Dlete Labels
+DELETE http://localhost:8091/labels/2
+Content-Type: application/json
+
+> {%
+    client.test("Response status is no content", function() {
+        client.assert(response.status === 204, "Response status is not 204");
+    });
+%}
